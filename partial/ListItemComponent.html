@@ -1,0 +1,17 @@
+<template id='listItemComponent'>
+    <style>
+        .listItemStyle1 li{
+            background-color: aqua;
+            color: crimson;
+        }
+
+    </style>
+    <div>
+        <ul class="listItemStyle1">
+            <%console.log(sp);%>
+            <li><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.name : 'name: undefined' %></li>
+            <li><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.value : 'value: undefined'  %></li>
+            <li><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.dob : 'dob: undefined'  %></li>
+        </ul>
+    </div>
+</template>

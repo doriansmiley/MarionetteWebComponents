@@ -2,12 +2,10 @@
  * Created by dsmiley on 12/18/14.
  */
 Sp.ViewInitializer = function (app) {
-    if(app === null || app === undefined ){
-        throw new Error('Sp.ViewInitializer.constructor: app is required');
-    }
-    this.app = app;
-    this.init();
+    Sp.AbstractInitializer.prototype.constructor.call(this, app);
 }
+
+Sp.ObjectUtils.extend(Sp.AbstractInitializer , Sp.ViewInitializer);
 
 //this function should be overriden is sub class. DEfines the views used in the application
 Sp.ViewInitializer.prototype.getViews = function(){

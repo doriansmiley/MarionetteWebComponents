@@ -1,0 +1,5 @@
+Create app class
+Experiment with the listen to and change event. It looks like you can specify ‘change:modelProperty’ where model property is the attribute you want to listen to
+Add an injector. The injector can be used to look up the behaviors. Also refactor any existing code that could benefit.
+Create a behaviors class that can allow data binding. The base abstract class simply hook up basic functions for model and collection change. This can be overriden by subclasses to define the specific bindings they want assigned.
+create unit test samples with sauce labs

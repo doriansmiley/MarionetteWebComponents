@@ -22,6 +22,18 @@ Sp.AbstractWebComponentViewBase.prototype.initialize = function ( options ) {
     this.base.prototype.initialize.call(this, options);
 }
 
+Sp.AbstractWebComponentViewBase.prototype.mapSkinParts = function ( clone ) {
+    var skinParts = clone.querySelectorAll('[data-skin-part]');
+    for( var i=0; i < skinParts.length; i++ ){
+        this.addSkinPart( skinParts[i].getAttribute('data-skin-part'), skinParts[i] );
+    }
+}
+
+//stub for override
+Sp.AbstractWebComponentViewBase.prototype.addSkinPart = function ( name, element ) {
+
+}
+
 
 Sp.AbstractWebComponentViewBase.prototype.render = function () {
     //check if the external template is loaded. Child view componentws are inited and rendered by the framework,
@@ -33,7 +45,15 @@ Sp.AbstractWebComponentViewBase.prototype.render = function () {
     this.$el.prepend(this.template(this.model));
     var template = this.el.querySelector(this.templateRoot);
     var clone = document.importNode(template.content, true);
-    this.host.appendChild(clone);
+    this.mapSkinParts( clone );
+    //is the host component specifies a child view use it else use host
+    if( this.childViewContainer !== null && this.childViewContainer !== undefined ){
+        this.childViewContainer.appendChild(clone);
+    }else{
+        //IMPORTANT: if host is null we need to create a shadow root using the element
+        this.host.appendChild(clone);
+    }
+
     this.base.prototype.render.call(this);
 }
 

@@ -7,11 +7,10 @@
 
     </style>
     <div>
-        <ul class="listItemStyle1">
-            <%console.log(sp);%>
-            <li><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.name : 'name: undefined' %></li>
-            <li><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.value : 'value: undefined'  %></li>
-            <li><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.dob : 'dob: undefined'  %></li>
+        <ul class="listItemStyle1" data-skin-part="list">
+            <li data-skin-part="name"><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.name : 'name: undefined' %></li>
+            <li data-skin-part="value"><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.value : 'value: undefined'  %></li>
+            <li data-skin-part="dob"><%- ( sp.attributes !== null && sp.attributes !== undefined) ? sp.attributes.dob : 'dob: undefined'  %></li>
         </ul>
     </div>
 </template>

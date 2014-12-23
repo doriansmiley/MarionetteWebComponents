@@ -20,4 +20,23 @@ Sp.ListItemView.prototype.setTemplateData = function( value ){
     return Sp.ListItemView.templateData = value;
 }
 
+Sp.ListItemView.prototype.addSkinPart = function ( name, element ) {
+    switch( name ){
+        case 'list':
+            break;
+        case 'name':
+            element.addEventListener('click', this.onNameClick.bind(this), false );
+            break;
+        case 'value':
+            break;
+        case 'dob':
+            break;
+    }
+}
+
+Sp.ListItemView.prototype.onNameClick = function ( event ) {
+    alert('my name is: ' + this.model.get('name'));
+    console.log(this.model.get('name'));
+}
+
 Sp.ListItemView.templateData = null;

@@ -43,6 +43,7 @@ Sp.AbstractWebComponentViewBase.prototype.render = function () {
         this.loadTemplate(this.templateUrl);
         return;
     }
+    this.$el.empty();
     this.$el.prepend(this.template(this.model));
     if( this.host === null || this.host === undefined ){
         this.host = this.el.createShadowRoot();
@@ -50,6 +51,14 @@ Sp.AbstractWebComponentViewBase.prototype.render = function () {
     var template = this.el.querySelector(this.templateRoot);
     var clone = document.importNode(template.content, true);
     this.mapSkinParts( clone );
+    this.attachToHost(clone);
+
+    this.base.prototype.render.call(this);
+
+    //this.triggerMethod("Render", {})
+}
+
+Sp.AbstractWebComponentViewBase.prototype.attachToHost = function ( clone ) {
     //is the host component specifies a child view use it else use host
     if( this.childViewContainer !== null && this.childViewContainer !== undefined ){
         this.childViewContainer.appendChild(clone);
@@ -57,8 +66,6 @@ Sp.AbstractWebComponentViewBase.prototype.render = function () {
         //IMPORTANT: if host is null we need to create a shadow root using the element
         this.host.appendChild(clone);
     }
-
-    this.base.prototype.render.call(this);
 }
 
 //IMPORTANT: sub classes must override this method. It's designed to cache template data but will need to point to a different static property defined by the subclass
@@ -105,6 +112,7 @@ Sp.AbstractWebComponentViewBase.prototype.loadTemplate = function (url) {
 
 Sp.AbstractWebComponentViewBase.prototype.onDestroy = function(){
     // custom destroying and cleanup goes here
+    this.$el.empty();
     this.shadowDom = null;
     this.templateRoot = null;
     this.templateUrl = null;

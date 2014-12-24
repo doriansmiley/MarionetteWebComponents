@@ -11,22 +11,13 @@ Sp.AbstractWebComponentCollectionView = Backbone.Marionette.CollectionView.exten
 Sp.ObjectUtils.mixinToObject( Sp.AbstractWebComponentViewBase, Sp.AbstractWebComponentCollectionView );
 
 Sp.AbstractWebComponentCollectionView.prototype.render = function () {
-
-    if(this.template === null || this.template === undefined ){
-        this.loadTemplate(this.templateUrl);
-        return;
+    if( this.host !== null && this.host !== undefined ){
+        this.host.innerHTML = '';
     }
-
-    this.$el.prepend(this.template(this.model));
-    //this is where the magic happens. We set up the shadow root and store a reference to the host root.
-    //from now on if you add children to this.el they will not be visible in the DOM
-    this.host = this.el.createShadowRoot();
-    var template = this.el.querySelector(this.templateRoot);
-    var clone = document.importNode(template.content, true);
-    this.mapSkinParts(clone);
+    Sp.AbstractWebComponentViewBase.prototype.render.call(this);
+}
+Sp.AbstractWebComponentCollectionView.prototype.attachToHost = function ( clone ) {
     this.host.appendChild(clone);
-
-    Backbone.Marionette.CollectionView.prototype.render.call(this);
 }
 
 Sp.AbstractWebComponentCollectionView.prototype.attachHtml = function ( collectionView, childView, index ) {

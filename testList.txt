@@ -1,10 +1,45 @@
-Create app class
-Experiment with the listen to and change event. It looks like you can specify ‘change:modelProperty’ where model property is the attribute you want to listen to
-    you can listen to changes on a specific attribute as follows: model.listenTo(model, 'change:dob', model.dobChange);
-    the method signature of the call back should be as follows: function( event, value )
-    there is a third param sent back but I'm not sure what it is
-Add an injector. The injector can be used to look up the behaviors. Also refactor any existing code that could benefit.
-Create a behaviors class that can allow data binding. The base abstract class simply hook up basic functions for model and collection change. This can be overriden by subclasses to define the specific bindings they want assigned.
 Refactor to use modules
 Experiment with the use of <content> tags in web components. See if we can define the content in the main HTML file wrapped in a custom tag
 create unit test samples with sauce labs
+
+
+Lessons Learned
+
+We can support web components!
+The render method implementation is very important and a bit touchy. You can not remove a shadowRoot from the DOM so be sure to recycle it. For example if I track the root host on a property called host in my render method I would have the following:
+ if( this.host === null || this.host === undefined ){
+         this.host = this.el.createShadowRoot();
+ }
+ This ensures the shadow root is created only once
+ Collection views also need to clear the root host of any HTML when the view is rendered. So the render method in a collection view must include
+ if( this.host !== null && this.host !== undefined ){
+         this.host.innerHTML = '';
+ }
+ This is due to the fact that the render method on collections is typically called multiple times, for example when you sort a collection
+
+ We can use dependency injection as a way to avoid global resources and singletons
+ By creating and assigning and injector to the app, and passing the app through the constructor of view objects, we can avoid using global variables and get application resources that point to a single object isntance without using a singleton
+ Singletons have draw backs for unit testing as they can not be tested in isolation. So the injector allows us to preserve the integrity of our unit tests while leveraging inversion of control
+ Also, the decoupled nature of the backbone model can make it hard to look up a model outside the view that manages it. Using hte injector you can control what model instance is passed to the view, and easily access it outside the view
+ For example:
+ options.injector.inject('ListItemCollection');
+
+ Delegation of application start up works well
+ By delegating application start up to a set of initializers (ie view, behaviors, injector, regions, etc ) instantiated by an application abject we can provide fine grain control over the start up process and make the code more readable.
+
+ Databinding is a bit clunky but very effective
+ In general leveraging behaviors that are added to your views seems to be the preferable method for binding views to the model. Behaviors are more protable as they can be encapsulated outside the view, and Marionette provides a built in mix in method
+ Model objects or objects that are not Marionette view components that can not leverage the power of behaviors can use the listenTo and on methods to bind to mmodel changes including attribute value changes.
+ As a side note it looks like the best way for models internally to respond to changes (traditionally done in an accessor method) is to use listenTo or on and define callbacks in the objects constructor or initialize method
+
+ Using custom accessors can be beneficial
+ Not all objects in Backbone allow you to define custom attributes that will participate in it's event API. For example you can not define custom attributes for a collection as follows:
+ defaults:{
+    sortType:'name'
+ }
+ The collection ignores this code. You can optionally define your own accessor methods on the object and dispatch your own change events whenever the value changes. To listen for changes on your custom property you could use:
+ myView.listenTo(myCollection, 'myCollection:sortChanged', this.onSortChange);
+ Assuming your collection's setter method triggers the 'myCollection:sortChanged' event you can respond to changes. Alternatively you can make the object observable and bind directly to it.
+ The sample project contains and observer pattern implementation and data binding sample in the SortButtonView object
+
+

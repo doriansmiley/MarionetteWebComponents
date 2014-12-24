@@ -17,8 +17,14 @@ Sp.AbstractCollectionViewBehavior.prototype.getCollectionEvents = function () {
         destroy:this.onDestroy,
         request:this.onRequest,
         sync:this.onSync,
-        error:this.onError
+        error:this.onError,
+        onRender:this.onError
     };
+}
+
+Sp.AbstractCollectionViewBehavior.prototype.onRender = function ( event ) {
+    console.log('Sp.AbstractCollectionViewBehavior.prototype.onRender: ');
+    console.log(arguments);
 }
 
 Sp.AbstractCollectionViewBehavior.prototype.onAdd = function ( event ) {

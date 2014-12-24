@@ -1,8 +1,24 @@
 /**
  * Created by dsmiley on 12/18/14.
  */
-Sp.ListItemCollection = Backbone.Collection.extend({
+Sp.ListItemCollection = Sp.AbstractCollection.extend({
     model:Sp.ListItemModel,
+    initialize: function( model, options ){
+        var _sortType = 'name';
+        this.addProperties({
+            sortType:{
+                get: function () {
+                    return _sortType;
+                },
+                set: function (value) {
+                    _sortType = value;
+                    this.comparator = ( _sortType == 'dob' ) ? this.sortByDob : 'name';
+                    this.sort();
+                    this.Notify(value, 'sortType');
+                }
+            }
+        });
+    },
     el:'#itemRegion',
     save:function(attributes, options ){
         //nothing really to override unless we want to check preconditions before save

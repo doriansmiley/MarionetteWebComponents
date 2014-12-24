@@ -6,7 +6,8 @@ Sp.SortButtonView = Sp.AbstractWebComponentItemView.extend({
         options.templateRoot = '#sortButtonComponent';//the root template element of the external web component html
         options.templateUrl = 'partial/SortButtonComponent.html';//the location of the web component html
         this.sortBtnProxy = this.onSortButtonClick.bind(this);
-        this.sorted = false;
+        this.binder = new Sp.Binder();
+        this.listItemCollection = options.injector.inject('ListItemCollection');
         Sp.AbstractWebComponentItemView.prototype.constructor.call(this, options);
     }
 });
@@ -26,27 +27,34 @@ Sp.SortButtonView.prototype.addSkinPart = function ( name, element ) {
         case 'sortBtn':
             this.sortBtn = element;
             this.sortBtn.addEventListener('click', this.sortBtnProxy, false );
-            this.setButtunLabel();
+            this.setButtonLabel();
+            break;
+        case 'sortValue':
+            this.sortValue = element;
+            this.binder.bind(this.listItemCollection, 'sortType', this, 'setSortValue')
             break;
     }
 }
 
-Sp.SortButtonView.prototype.setButtunLabel = function () {
-    this.sortBtn.innerHTML = ( !this.sorted ) ? 'Sort By DOB' : 'Sort By Name';
+Sp.SortButtonView.prototype.setSortValue = function ( value ) {
+    this.sortValue.innerHTML = value;
+}
+
+Sp.SortButtonView.prototype.setButtonLabel = function () {
+    this.sortBtn.innerHTML = ( this.listItemCollection.sortType == 'name' ) ? 'Sort By DOB' : 'Sort By Name';
 }
 
 Sp.SortButtonView.prototype.onSortButtonClick = function ( event ) {
-    var listItemCollection = this.injector.inject('ListItemCollection');
-    listItemCollection.comparator = ( !this.sorted ) ? listItemCollection.sortByDob : 'name';
-    listItemCollection.sort();
-    this.setButtunLabel();
-    this.sorted = !this.sorted;
+    this.listItemCollection.sortType = ( this.listItemCollection.sortType == 'name' ) ? 'dob': 'name';
+    this.setButtonLabel();
 }
 
 Sp.SortButtonView.prototype.onDestroy = function(){
     if( this.sortBtn !== null && this.sortBtn !== undefined ){
         this.sortBtn.removeEventListener('click', this.sortBtnProxy, false );
     }
+    this.binder = null;
+    this.listItemCollection = null;
     Sp.AbstractWebComponentViewBase.prototype.onDestroy.call(this);
 }
 

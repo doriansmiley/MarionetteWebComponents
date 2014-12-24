@@ -5,6 +5,7 @@ Sp.ListItemView = Sp.AbstractWebComponentItemView.extend({
     constructor:function(options){
         options.templateRoot = '#listItemComponent';//the root template element of the external web component html
         options.templateUrl = 'partial/ListItemComponent.html';//the location of the web component html
+        this.nameProxy = this.onNameClick.bind(this);
         Sp.AbstractWebComponentItemView.prototype.constructor.call(this, options);
     },
     model:Sp.ListItemModel
@@ -25,7 +26,8 @@ Sp.ListItemView.prototype.addSkinPart = function ( name, element ) {
         case 'list':
             break;
         case 'name':
-            element.addEventListener('click', this.onNameClick.bind(this), false );
+            this.name = element;
+            this.name.addEventListener('click', this.nameProxy, false );
             break;
         case 'value':
             break;
@@ -37,6 +39,15 @@ Sp.ListItemView.prototype.addSkinPart = function ( name, element ) {
 Sp.ListItemView.prototype.onNameClick = function ( event ) {
     alert('my name is: ' + this.model.get('name'));
     console.log(this.model.get('name'));
+}
+
+Sp.AbstractWebComponentViewBase.prototype.onDestroy = function(){
+    if( this.name !== null && this.name !== undefined ){
+        this.name.removeEventListener('click', this.nameProxy, false );
+    }
+    this.name = null;
+    this.nameProxy = null;
+    Sp.AbstractWebComponentViewBase.prototype.onDestroy.call(this);
 }
 
 Sp.ListItemView.templateData = null;

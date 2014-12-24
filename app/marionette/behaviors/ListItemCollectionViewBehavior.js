@@ -8,9 +8,9 @@ Sp.ListItemCollectionViewBehavior = function (options, view) {
 
 Sp.ObjectUtils.extend( Sp.AbstractCollectionViewBehavior,  Sp.ListItemCollectionViewBehavior);
 
-Sp.ListItemCollectionViewBehavior.prototype.onSort = function ( event ) {
+Sp.ListItemCollectionViewBehavior.prototype.onRender = function ( event ) {
     console.log('Sp.ListItemCollectionViewBehavior.prototype.onSort: ');
     console.log(arguments);
-    //enhance to check the value, if true assign sortByDob if not assign null
-    this.view.sortIndicator.innerHTML = 'sorting by date of birth';
+    var listItemCollection = this.view.injector.inject('ListItemCollection');
+    this.view.sortIndicator.innerHTML = (listItemCollection.sortType === 'name' ) ? 'sorting by name' : 'sorting by date of birth';
 }

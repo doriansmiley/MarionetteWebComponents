@@ -14,6 +14,7 @@ Sp.InjectorInitializer.prototype.init = function(){
 Sp.InjectorInitializer.prototype.addInitializer = function(){
     this.app.injector = new Sp.Injector();
     this.app.injector.mapSingletonInstance('ListItemCollection', new Sp.ListItemCollection());
+    this.app.injector.mapSingletonInstance('SettingsModel', new Sp.SettingsModel());
     this.app.injector.mapSingletonInstance('EventDispatcher', this.app.vent);
     this.app.injector.mapSingletonInstance('Service',{});//sample, add concrete service here
 }

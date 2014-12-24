@@ -29,6 +29,7 @@ Sp.ListItemCollectionView = Sp.AbstractWebComponentCollectionView.extend({
     }
 });
 
+
 Sp.ListItemCollectionView.prototype.addSkinPart = function ( name, element ) {
     switch( name ){
         case 'nameInput':
@@ -53,7 +54,8 @@ Sp.ListItemCollectionView.prototype.onDestroy = function(){
     if( this.addBtn !== null && this.addBtn !== undefined ){
         this.addBtn.removeEventListener('click', this.onClickProxy, false );
     }
-    Sp.AbstractWebComponentViewBase.prototype.onDestroy.call(this);
+    this.addBtn = null;
+    Sp.AbstractWebComponentCollectionView.prototype.onDestroy.call(this);
 }
 
 Sp.ListItemCollectionView.prototype.onAddBtnClick = function( event ){

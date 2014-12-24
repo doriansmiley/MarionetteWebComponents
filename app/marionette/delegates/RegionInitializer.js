@@ -13,6 +13,7 @@ Sp.RegionInitializer.prototype.init = function(){
 
 Sp.RegionInitializer.prototype.addRegions = function(){
     this.app.addRegions({
-        listRegion: '#listRegion'
+        listRegion: '#listRegion',
+        sortButtonRegion: '#sortButtonRegion'
     });
 }

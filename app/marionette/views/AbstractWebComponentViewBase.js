@@ -16,7 +16,8 @@ Sp.AbstractWebComponentViewBase.prototype.initialize = function ( options ) {
     }
     this.templateRoot = options.templateRoot;//the root template element of the external web component html
     this.templateUrl = options.templateUrl;//the location of the web component html
-    this.vent = options.vent;//find another way to get a handle on the central event bus
+    this.injector = options.injector;
+    this.vent = this.injector.inject('EventDispatcher');
     this.base = options.base;//the base class of the component
     this.templateReady = false;
     this.base.prototype.initialize.call(this, options);
@@ -43,6 +44,9 @@ Sp.AbstractWebComponentViewBase.prototype.render = function () {
         return;
     }
     this.$el.prepend(this.template(this.model));
+    if( this.host === null || this.host === undefined ){
+        this.host = this.el.createShadowRoot();
+    }
     var template = this.el.querySelector(this.templateRoot);
     var clone = document.importNode(template.content, true);
     this.mapSkinParts( clone );

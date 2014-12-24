@@ -15,15 +15,25 @@ Sp.ViewInitializer.prototype.getViews = function(){
             show:true,
             options:{
                 url:'data/listData.json',//where the views data can be found
-                vent:this.app.vent,//event aggregator for this view, here we are using the main app level aggregator, but we could define custom channels or another instance
+                injector:this.app.injector,//event aggregator for this view, here we are using the main app level aggregator, but we could define custom channels or another instance
                 base:Backbone.Marionette.CollectionView,//the base class for the view. Because we use mixins base allows us to target the appropriate base class for the instance
                 region:this.app.getRegion('listRegion'),
                 childViewContainer:'#listItemMain',
                 childViewOptions:{
-                    vent:this.app.vent,
+                    injector:this.app.injector,
                     base:Backbone.Marionette.ItemView
                 }
-            }}
+            }
+        },
+        {
+            view:Sp.SortButtonView,
+            show:true,
+            options:{
+                injector:this.app.injector,//event aggregator for this view, here we are using the main app level aggregator, but we could define custom channels or another instance
+                base:Backbone.Marionette.ItemView,//the base class for the view. Because we use mixins base allows us to target the appropriate base class for the instance
+                region:this.app.getRegion('sortButtonRegion')
+            }
+        }
     ];
 }
 

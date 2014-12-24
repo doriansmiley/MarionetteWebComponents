@@ -6,7 +6,6 @@ Sp.AbstractInitializer = function(app){
         throw new Error('Sp.AbstractInitializer.constructor: app is required');
     }
     this.app = app;
-    this.init();
 }
 
 //stub for override, subclasses must override this function

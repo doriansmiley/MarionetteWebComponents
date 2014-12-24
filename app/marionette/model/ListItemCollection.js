@@ -16,5 +16,11 @@ Sp.ListItemCollection = Backbone.Collection.extend({
         //serialize the model. This is the insertion point for a serializer class
         Backbone.Collection.prototype.toJSON.call(this, options );
     }
-    
 });
+
+Sp.ListItemCollection.prototype.sortByDob = function ( value1, value2) {
+    //return -1 if the first model should come before the second, 0 if they are of the same rank and 1 if the first model should come after
+    return ( new Date( value1.dob ) > new Date( value2.dob ) ) ? -1 : 1;
+}
+
+

@@ -10,7 +10,9 @@ Sp.SampleApp = Backbone.Marionette.Application.extend({
 });
 
 Sp.SampleApp.prototype.init = function () {
+    this.initInjector();
     this.initSettings();
+    this.initBehaviors();
     this.initRegions();
     this.initEventBus();
     this.initRequestResponse();
@@ -18,12 +20,23 @@ Sp.SampleApp.prototype.init = function () {
     this.initViews();
 }
 
+Sp.SampleApp.prototype.initInjector = function () {
+    this.injectorInitializer = new Sp.InjectorInitializer(this);
+    this.injectorInitializer.init();
+}
+
 Sp.SampleApp.prototype.initSettings = function () {
     _.templateSettings.variable = "sp";
 }
 
+Sp.SampleApp.prototype.initBehaviors = function () {
+    this.behaviorsInitializer = new Sp.BehaviorInitializer(this);
+    this.behaviorsInitializer.init();
+}
+
 Sp.SampleApp.prototype.initRegions = function () {
     this.regionInitializer = new Sp.RegionInitializer(this);
+    this.regionInitializer.init();
 }
 
 Sp.SampleApp.prototype.initEventBus = function () {
@@ -40,7 +53,7 @@ Sp.SampleApp.prototype.initCommands = function () {
 
 Sp.SampleApp.prototype.initViews = function () {
     this.viewInitializer = new Sp.ViewInitializer(this);
-
+    this.viewInitializer.init();
     this.vent.on(Sp.ViewInitializer.ALL_VIEWS_INITIALIZED, function( event ){
         var options={};
         this.start( options );

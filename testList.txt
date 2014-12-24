@@ -1,6 +1,10 @@
 Create app class
 Experiment with the listen to and change event. It looks like you can specify ‘change:modelProperty’ where model property is the attribute you want to listen to
+    you can listen to changes on a specific attribute as follows: model.listenTo(model, 'change:dob', model.dobChange);
+    the method signature of the call back should be as follows: function( event, value )
+    there is a third param sent back but I'm not sure what it is
 Add an injector. The injector can be used to look up the behaviors. Also refactor any existing code that could benefit.
 Create a behaviors class that can allow data binding. The base abstract class simply hook up basic functions for model and collection change. This can be overriden by subclasses to define the specific bindings they want assigned.
 Refactor to use modules
+Experiment with the use of <content> tags in web components. See if we can define the content in the main HTML file wrapped in a custom tag
 create unit test samples with sauce labs

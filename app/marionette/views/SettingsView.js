@@ -23,7 +23,8 @@ Sp.SettingsView.prototype.setUpBindings = function ( value ) {
     this.listenTo(this.model, 'change:active', this.setActive.bind(this));
     this.listenTo(this.model, 'change:backgroundColor', this.setBackgroundColor.bind(this));
     //set initial values
-    this.setActive(this.model.get('active'));
+    this.setActive(null, this.model.get('active'));
+    this.setBackgroundColor( null, this.model.get('backgroundColor'));
 }
 
 //IMPORTANT: sub classes must override this method. It's designed to cache template data but will need to point to a different static property defined by the subclass
@@ -41,29 +42,29 @@ Sp.SettingsView.prototype.addSkinPart = function ( name, element ) {
         case 'showBtn':
             this.showBtn = element;
             this.showBtn.addEventListener('click', this.showBtnProxy, false );
-            this.setActive(this.model.get('active'));
+            this.setActive(null, this.model.get('active'));
             break;
         case 'backgroundColorInput':
             this.backgroundColorInput = element;
-            this.setActive(this.model.get('active'));
+            this.setActive(null, this.model.get('active'));
+            this.setBackgroundColor( null, this.model.get('backgroundColor'));
             break;
         case 'backgroundColorLabel':
             this.backgroundColorLabel = element;
-            this.setBackgroundColor(this.model.get('active'));
-            this.setActive(this.model.get('active'));
+            this.setActive(null, this.model.get('active'));
             break;
     }
 }
 
-Sp.SettingsView.prototype.setActive = function ( value ) {
+Sp.SettingsView.prototype.setActive = function ( event, value ) {
     if( this.backgroundColorInput ){
-        this.backgroundColorInput.style.visibility = ( this.model.active ) ? 'visible' : 'hidden';
+        this.backgroundColorInput.style.visibility = ( value ) ? 'visible' : 'hidden';
     }
     if( this.backgroundColorLabel ){
-        this.backgroundColorLabel.style.visibility = ( this.model.active ) ? 'visible' : 'hidden';
+        this.backgroundColorLabel.style.visibility = ( value ) ? 'visible' : 'hidden';
     }
     if( this.showBtn ){
-        this.showBtn.innerHTML = ( value ) ? 'Show Settings' : 'Hide Settings';
+        this.showBtn.innerHTML = ( value ) ? 'Hide Settings' : 'Show Settings';
     }
 }
 
@@ -78,7 +79,7 @@ Sp.SettingsView.prototype.setBackgroundColor = function ( event, value ) {
 Sp.SettingsView.prototype.onShowButtonClick = function ( event ) {
     //route to settings view
     console.log('Sp.SettingsView.prototype.onShowButtonClick');
-
+    this.injector.inject('Router').navigate( (this.model.get('active') ) ? 'home' : 'settings',true);
 }
 
 Sp.SettingsView.prototype.onDestroy = function(){

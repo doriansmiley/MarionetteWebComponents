@@ -42,4 +42,8 @@ The render method implementation is very important and a bit touchy. You can not
  Assuming your collection's setter method triggers the 'myCollection:sortChanged' event you can respond to changes. Alternatively you can make the object observable and bind directly to it.
  The sample project contains and observer pattern implementation and data binding sample in the SortButtonView object
 
+ Route delegation and data binding works well
+ The application delegation method works well with routes. Using a data driven approach where by route controllers update the model to trigger a change in the view also works perfectly.
+ It seems like every part of the app at this point is well suited to a data driven approach
+
 

@@ -17,6 +17,7 @@ Sp.SampleApp.prototype.init = function () {
     this.initEventBus();
     this.initRequestResponse();
     this.initCommands();
+    this.initRoutes();
     this.initViews();
 }
 
@@ -49,6 +50,11 @@ Sp.SampleApp.prototype.initRequestResponse = function () {
 
 Sp.SampleApp.prototype.initCommands = function () {
 
+}
+
+Sp.SampleApp.prototype.initRoutes = function () {
+    var routeInitializer = new Sp.RouteInitializer(this);
+    routeInitializer.init();
 }
 
 Sp.SampleApp.prototype.initViews = function () {
